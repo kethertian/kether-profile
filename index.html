@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kether | Global Marketing Expert</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #fafafa;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+        
+        .layout-container {
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .glass-nav {
+            background: rgba(250, 250, 250, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        .glass-liquid {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 1);
+            border-left: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.15);
+        }
+
+        .glass-card-refined {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            border-left: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.1);
+        }
+        .glass-card-refined:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+
+        .glass-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { animation: marquee 35s linear infinite; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(0.5deg); }
+        }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 200px;
+            gap: 1rem;
+        }
+        .gallery-item {
+            border-radius: 1rem; overflow: hidden;
+            position: relative; 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-left: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+        
+        .gallery-text {
+            font-size: 1.25rem; font-weight: 700; color: #111827;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 1rem; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.7);
+            border-left: 1px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1.5rem; line-height: 1.4;
+            box-shadow: 0 8px 32px rgba(37, 99, 235, 0.05);
+        }
+
+        .case-sidebar-container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.15) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-left: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 1rem 0.5rem;
+            width: 240px;
+            box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.08);
+        }
+        .case-link {
+            position: relative; transition: all 0.3s;
+            border-radius: 0.75rem; padding: 0.75rem 1.25rem;
+            font-size: 0.65rem; font-weight: 800; color: #9ca3af;
+            text-align: left; text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+        .case-link:hover { color: #4b5563; }
+        .case-link.active {
+            background: white;
+            color: #2563eb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .case-link.active::after {
+            content: ''; position: absolute; right: 0.75rem; top: 50%;
+            transform: translateY(-50%); width: 4px; height: 4px;
+            background: #2563eb; border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 relative">
+
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-[#fcfcfd]">
+        <div class="absolute -top-[10%] -right-[5%] w-[800px] h-[800px] rounded-full bg-blue-100/60 blur-[120px] animate-float" style="animation-duration: 15s;"></div>
+        <div class="absolute top-[20%] -left-[10%] w-[700px] h-[700px] rounded-full bg-orange-50/50 blur-[120px] animate-float" style="animation-duration: 18s; animation-delay: -5s;"></div>
+        <div class="absolute -bottom-[10%] left-[20%] w-[900px] h-[900px] rounded-full bg-indigo-50/60 blur-[120px] animate-float" style="animation-duration: 20s; animation-delay: -10s;"></div>
+    </div>
+
+    <script>
+        const siteContent = {
+            zh: {
+                nav: { expertise: "职业能力", gallery: "项目画廊", portfolio: "个人案例", lang: "EN" },
+                hero: {
+                    name: "Hi, I'm Kether",
+                    slogan: "Global Marketing Expert",
+                    intro: "资深全球营销专家，专注于品牌出海全链路营销，擅长利用本土化洞察与多端资源网络为品牌赋能高效传播与国际竞争力。",
+                    badges: [ "多元化项目经验", "全球资源网络", "服务头部出海企业" ],
+                    btnXhs: "小红书主页",
+                    btnContact: "联系方式",
+                    marquee: ["GLOBAL VISION", "BRAND GROWTH", "KOL ECOSYSTEM", "DATA DRIVEN", "LOCALIZATION", "MARKETING EXPERT"]
+                },
+                gallery: {
+                    label: "PROJECT GALLERY",
+                    title: "项目画廊",
+                    text1: "全球KOL&名人&明星合作",
+                    text2: "品牌线下活动&事件营销",
+                    text3: "覆盖科技、AI、电商、文化等多行业"
+                },
+                expertise: {
+                    label: "WHAT I DO",
+                    title: "核心职业能力",
+                    items: [
+                        { id: "exp1", icon: "globe", title: "品牌出海策略", desc: "擅长海外市场品牌整合营销，全面覆盖 KOL 营销、PR 传播与内容营销等多元手段。<div class='h-2'></div>具备丰富的比稿经验，能够基于敏锐的市场与用户洞察，为品牌提供极具竞争力的营销策略并推动赢标。" },
+                        { id: "exp2", icon: "trending-up", title: "全流程项目操盘", desc: "高效协调跨部门团队、外部供应商及多端资源组合。<div class='h-2'></div>精准把控项目从前期筹备到最终落地的全流程执行与高质量交付。" },
+                        { id: "exp3", icon: "users", title: "团队建设与管理", desc: "具备扎实的出海业务团队搭建与人才培养经验。<div class='h-2'></div>擅长通过优化工作流程显著提升团队整体运营效率，并驱动团队经营目标的达成。" }
+                    ]
+                },
+                portfolio: {
+                    label: "SELECTED PROJECT",
+                    title: "精选个人案例",
+                    more: "查看详情",
+                    modalSections: { background: "项目背景", strategy: "执行策略", results: "数据成果" },
+                    items: [
+                        { 
+                            id: 1, title: "Xiaomi日本市场首位代言人合作", shortTitle: "Xiaomi代言人合作", tags: ["新品发布", "代言人合作", "整合营销"], desc: "借势日本国民偶像 Kōki 官宣新品代言，通过线上线下全渠道高密度曝光，帮助品牌迅速打破本土文化壁垒 。项目实现全网超 8.6 亿曝光及搜索量 270% 的爆发式增长，并斩获多项行业大奖 。",
+                            detail: {
+                                background: "2021年Xiaomi在日本发布旗舰新品11T Pro，面对日本市场对本土品牌高度认同的特点，品牌亟需在当地年轻白领群体中快速建立信任感并实现新品的冷启动高曝光。",
+                                strategy: "官宣日本高人气国民偶像Kōki为品牌首位代言人。采用线上线下强联动矩阵，官方与艺人社媒同步首发大片；线下重磅点亮日本9大核心城市的地标建筑大屏；同时联合GQ日本产出深度专访，带动科技与大众媒体二次传播 。",
+                                results: "新品发布首日日本全网累计曝光15M+，发布一周后品牌搜索指数环比飙升270%，项目成功斩获TopDigital、IAI等多个行业奖项 。"
+                            }
+                        },
+                        { 
+                            id: 2, title: "TikTok Shop北美市场个护品类IP营销——「Life in Full Glow」", shortTitle: "TikTok Shop北美IP营销", tags: ["平台级 IP 项目", "情绪化内容叙事", "内容电商"], desc: "围绕“Glow”情绪内核打造首个北美个护品类 IP，联动线上社媒达人种草与纽约、洛杉矶线下地标大屏投放。通过场景化叙事，成功构建了平台在个护生活方式领域的核心心智。",
+                            detail: {
+                                background: "在北美个护品牌持续涌入、竞争加剧的环境下，TikTok Shop打造平台级联合IP活动，强化其作为“个护生活方式主场”的平台核心心智。",
+                                strategy: "以“Glow”情绪符号贯穿全局，线上联合多圈层达人创作反差趣味视频与带货场景内容，并派发专属PR礼盒引发自然开箱；线下登陆纽约与洛杉矶核心交通枢纽大屏，并举办合作商家Workshop与用户深度互动。",
+                                results: "视频累计曝光超过7M+，成功打通ToC用户的情感共鸣，加深了北美受众对于TikTok电商平台的价值认知与购买习惯。"
+                            }
+                        },
+                        { 
+                            id: 3, title: "HONOR 2025 MWC 展会全球社媒营销", shortTitle: "HONOR MWC社媒营销", tags: ["MWC展会", "KOL矩阵", "多阶段内容引爆"], desc: "借势 MWC 展会节点，联动 66 位海外顶尖科技与生活方式 KOL，对品牌核心 AI 功能展开场景化与差异化的深度解读。项目累计收获超 829 万次浏览，强势抢占全球 AI 科技圈层的话题声量。",
+                            detail: {
+                                background: "MWC展会期间，HONOR重磅发布Alpha Plan战略，希望借助海外社媒力量，快速拉升在AI科技圈层的曝光度与能力认知，占领行业讨论高地。",
+                                strategy: "搭建欧美头部科技及腰部生活方式KOL矩阵。传播分为三阶段：预热期抛出话题占位AI语境，发布期邀请KOL现场打卡输出第一视角反馈，延续期深度访谈解读战略，同时在X平台进行实时热点发酵。",
+                                results: "两周传播期内共合作66位海外KOL，产出109条深度内容，项目总浏览量突破829万次。"
+                            }
+                        },
+                        { 
+                            id: 4, title: "CapCut AI 创作能力心智构建 x 全球达人营销", shortTitle: "CapCut全球达人营销", tags: ["AI心智建立", "达人内容营销", "多渠道矩阵"], desc: "配合 CapCut 核心功能升级，分阶段深度合作 160 余位全球多圈层达人，输出“创意+教学”的高质量视频内容。累计斩获超 1.1 亿次播放量，高效沉淀了产品「All-in-One AI 创作平台」的市场认知。",
+                            detail: {
+                                background: "2025年CapCut全套AI创作工具矩阵的上线，需全面提升用户对其“All-in-One AI创作平台”的核心认知与使用渗透率。",
+                                strategy: "分三阶段推进达人整合营销，阶段一聚焦AI垂类达人展示工具全能性；阶段二通过短视频与深度教程组合拳强化Video Maker使用率；阶段三瞄准SMB（中小企业）场景，联合营销达人种草PC端设计功能。",
+                                results: "累计合作超160位全球达人，项目累计播放量突破1.1亿+，互动量超45万次。"
+                            }
+                        },
+                        { 
+                            id: 5, title: "Hisense 100\" TV x EURO 2024 欧洲杯体育营销", shortTitle: "Hisense欧洲杯营销", tags: ["AR互动社交", "CGI video", "体育IP跨界"], desc: "瞄准欧洲杯情绪高点，打造“在家即到现场”的沉浸式 AR 互动滤镜，并辅以极具视觉冲击力的柏林地标 CGI 病毒视频。创意玩法实现了赛事与品牌的深度绑定，仅 AR 贴纸便斩获超 1300 万次观看。",
+                            detail: {
+                                background: "借助2024年欧洲杯官方合作契机，海信希望将100寸高端电视的硬核技术优势，转化为直观可感的用户观看体验，实现赛事期间的品牌破圈曝光。",
+                                strategy: "主打“在家即到现场”的沉浸式创意，线上开发TikTok专属AR互动滤镜，让用户“穿越”球场打卡；线下利用CGI技术在柏林勃兰登堡门前植入巨型虚拟电视引发社媒猎奇；并联合多圈层达人进行线下观赛打卡分发。",
+                                results: "社媒AR贴纸观看次数突破1300万+；达人视频总播放量突破350万+， 成功将赛事情绪与品牌深度绑定。"
+                            }
+                        },
+                        { 
+                            id: 6, title: "Motiff AI x Figma Config 2024 线下事件营销", shortTitle: "Motiff线下事件营销", tags: ["产品发布", "行业展会", "线下快闪"], desc: "借势全球顶级设计大会展开线下场景劫持，通过定制广告车高频巡游与深度街头访问，以挑战者姿态引发行业热议，实现品牌声量的高效破圈与资产沉淀。",
+                            detail: {
+                                background: "专注UI设计的Motiff AI期望借势全球顶级产品设计大会Figma Config 2024，在核心专业人群中正面交锋，打响其作为AI原生设计工具的先锋名号。",
+                                strategy: "巧妙实施行业大会场景劫持，定制大屏广告车在展会核心动线高频巡游，以“Hi Figma, are you ready for AI era?”直击行业标杆；同时在街头邀请专业设计师体验并纪实访问，将线下事件包装为品牌短片在线上二次引爆。",
+                                results: "在大会核心从业者中实现高密度曝光，成功驱动行业的破圈讨论。"
+                            }
+                        },
+                        { 
+                            id: 7, title: "Alipay+ 亚太地区跨境目的地营销", shortTitle: "Alipay+亚太目的地营销", tags: ["内容种草", "高频场景曝光", "本土旅游局合作"], desc: "联合本土旅游局与头部达人发起出行种草计划，叠加亚太核心交通枢纽的 104 块大屏密集曝光，全链路强化跨境支付体验，成功将抽象的支付功能具象化，帮助品牌在出境游复苏浪潮中抢占钱包用户心智。",
+                            detail: {
+                                background: "伴随2023年跨境旅游复苏，Alipay+希望面向亚太地区本地钱包用户，解决认知模糊痛点，强化“出境游可直接使用本地钱包进行Alipay+支付”的心智。",
+                                strategy: "策划「百大网红目的地出行计划」，线上联合新加坡等本土旅游局及头部旅行达人，实地展示全场景支付打卡；线下在泰国、韩国等核心交通枢纽投放超104块大屏广告，形成行前攻略到落地出行的心智闭环。",
+                                results: "仅新加坡单站达人内容即斩获190万+曝光；通过高频场景融合将抽象支付技术转化为真实出行体验。"
+                            }
+                        },
+                        { 
+                            id: 8, title: "Redmi Note 11 Series × TikTok 全球互动贴纸挑战赛", shortTitle: "Redmi全球TK挑战赛", tags: ["平台挑战赛", "达人营销", "全球裂变扩散"], desc: "锚定全球 Z 世代受众，定制极具原生感的“跳舞机”互动贴纸，并通过跨国达人矩阵引发病毒式裂变传播。该项目荣获 TopDigital 铜奖，并在全球 17 个市场累计创造超 360亿次现象级观看。",
+                            detail: {
+                                background: "Redmi Note 11新品发布，品牌希望精准对接Z世代受众，借力TikTok平台的高互动属性，实现全球新品声量与曝光的指数级放大。",
+                                strategy: "迎合Z世代音舞偏好，量身打造“跳舞机”原生互动贴纸，并巧妙植入产品“闪电”符号；邀请头部达人首发示范。项目率先在英国市场跑通链路，成熟后迅速复制裂变至全球其他核心国家市场。",
+                                results: "项目斩获TopDigital铜奖；英国首发区创造1.11B+播放记录，贴纸复用至17个国家，全球累计观看突破360亿，互动高达36亿次。"
+                            }
+                        },
+                        { 
+                            id: 9, title: "vivo x 2022 卡塔尔世界杯公关事件", shortTitle: "vivo世界杯公关传播", tags: ["全球赛事 IP", "公益跨界", "本土化传播"], desc: "洞察东南亚本土社会语境，将顶级足球赛事 IP 与青少年教育公益跨界融合，联动 NGO 与多国知名球星发起梦想倡导，通过充满温度的本土化公关叙事，成功在区域泛娱乐人群中建立了深厚的情感共鸣。",
+                            detail: {
+                                background: "东南亚地区对传统足球赛事的关注相对有限，vivo作为赞助商寻找本土化沟通桥梁，以提升世界杯IP在当地的吸引力，深化品牌情感连结。",
+                                strategy: "将顶级体育赛事与当地关注的难民儿童教育结合，发起“Give Your Dreams A Shot”跨界公益事件。联合NGO及多国知名球星组成“梦想护卫队”在社媒发声；同时在越南、新加坡落地线下公益观赛与产品体验活动。",
+                                results: "联动东南亚本土媒体发稿超50篇；球星社媒触达粉丝超177万，成功实现国际IP的本土化转译。"
+                            }
+                        },
+                        { 
+                            id: 10, title: "“欢乐春节”文化 IP全球传播项目", shortTitle: "“欢乐春节”全球传播", tags: ["文化IP传播", "社媒话题裂变", "内容电商整合"], desc: "围绕国家级文化 IP，通过社媒互动挑战赛、达人跨文化解读与国潮电商直播，将传统符号转化为全球可参与的消费体验场。联动 120 余位明星达人，跨平台累计斩获超 3 亿次品牌曝光，助力中华文化实力出海。",
+                            detail: {
+                                background: "在中国文化出海的浪潮下，国家级IP“欢乐春节”期望以数字化的创新传播方式触达海外受众，强化中国传统文化符号在全球化语境下的认知与记忆。",
+                                strategy: "打造“内容+社媒+电商”的闭环阵地。在TikTok等平台上线“年夜饭”专属贴纸引发UGC创作；邀请海外达人拍摄音乐会Reaction视频打破跨文化壁垒；同时借势“年货节”开展国潮文创直播，构建全新文化消费场景。",
+                                results: "联动120余位海内外明星及达人，全球累计品牌曝光突破3亿次，活动专属话题跨平台曝光超1.42亿+。"
+                            }
+                        }
+                    ]
+                },
+                modal: { title: "Let's Connect!", subtitle: "开启全球化视野的新篇章", wechat: "微信号", email: "电子邮箱", qr: "扫码添加微信", copy: "复制微信号", copied: "已复制" }
+            },
+            en: {
+                nav: { expertise: "Expertise", gallery: "Project Gallery", portfolio: "Case Studies", lang: "中" },
+                hero: {
+                    name: "Hi, I'm Kether",
+                    slogan: "Global Marketing Expert",
+                    intro: "Senior global marketing expert specializing in end-to-end marketing for brands going global. Adept at leveraging localized insights and multi global networks to drive high-impact communication and competitive edge.",
+                    badges: [ "Diverse Projects Experience", "Global Network Resource", "Top Brands Served" ],
+                    btnXhs: "Rednote",
+                    btnContact: "Contact",
+                    marquee: ["GLOBAL VISION", "BRAND GROWTH", "KOL ECOSYSTEM", "DATA DRIVEN", "LOCALIZATION", "MARKETING EXPERT"]
+                },
+                gallery: {
+                    label: "PREVIOUS PROJECTS",
+                    title: "Project's Gallery",
+                    text1: "Global KOL & Celebrity Collaborations",
+                    text2: "Offline Events & Exhibition Marketing",
+                    text3: "Spanning Tech, AI, E-commerce, Culture & More"
+                },
+                expertise: {
+                    label: "WHAT I DO",
+                    title: "Core Competencies",
+                    items: [
+                        { id: "exp1", icon: "globe", title: "Global Brand Strategy", desc: "Proficient in integrated marketing for overseas markets, covering KOL, PR, and content marketing.<div class='h-2'></div>Experienced in leading pitches, delivering competitive strategies based on market insights to win business." },
+                        { id: "exp2", icon: "trending-up", title: "E2E Project Management", desc: "Efficiently coordinate cross-functional teams, external vendors, and multi-channel resources.<div class='h-2'></div>Ensure precise control from initial preparation to final execution and high-quality delivery." },
+                        { id: "exp3", icon: "users", title: "Team Leadership", desc: "Solid experience in building and developing overseas business teams.<div class='h-2'></div>Adept at significantly improving operational efficiency through workflow optimization and driving the achievement of team goals." }
+                    ]
+                },
+                portfolio: {
+                    label: "SELECTED PROJECTS",
+                    title: "Case Studies",
+                    more: "Details",
+                    modalSections: { background: "Project Context", strategy: "Core Strategy", results: "Key Results" },
+                    items: [
+                        { 
+                            id: 1, title: "Xiaomi Japan Market Spokesperson Collab", shortTitle: "Xiaomi Japan Spokesperson", tags: ["Product Launch", "Spokesperson", "IMC"], desc: "Leveraged Japan's national idol Kōki for the new product launch. Achieved 860M+ impressions across omni-channels, breaking local cultural barriers, driving a 270% surge in search volume, and winning multiple industry awards.",
+                            detail: { 
+                                background: "In 2021, Xiaomi launched the flagship 11T Pro in Japan. Facing a market with high loyalty to local brands, the brand urgently needed to quickly build trust among young local white-collar workers and achieve high cold-start exposure.", 
+                                strategy: "Announced highly popular Japanese national idol Kōki as the brand's first spokesperson. Adopted a strong online-offline matrix, premiering the campaign video on official and artist social media; illuminated landmark screens in 9 core cities offline; partnered with GQ Japan for an in-depth interview to drive secondary spread.", 
+                                results: "On launch day, cumulative exposure across Japan reached 15M+. One week later, brand search index soared 270%. The project won multiple industry awards including TopDigital and IAI." 
+                            }
+                        },
+                        { 
+                            id: 2, title: "TikTok Shop NA Personal Care IP Marketing — 'Life in Full Glow'", shortTitle: "TikTok Shop IP MKT", tags: ["Platform-Level IP", "Emotional Storytelling", "Content E-commerce"], desc: "Created the first NA personal care IP centered around 'Glow'. Integrated online influencer seeding with offline billboard displays in NY & LA, successfully establishing the platform's core mindshare in the personal care lifestyle sector.",
+                            detail: { 
+                                background: "With personal care brands continuously flooding the North American market and competition intensifying, TikTok Shop created a platform-level joint IP campaign to strengthen its core positioning as the 'home of personal care lifestyle'.", 
+                                strategy: "Used 'Glow' as the emotional anchor. Online, collaborated with multi-tier influencers to create fun videos and shoppable content, distributing PR boxes to trigger unboxing. Offline, launched on screens at core transit hubs in NY and LA, and hosted a merchant workshop.", 
+                                results: "Successfully unlocked emotional resonance among ToC users, deepening the North American audience's value perception and purchasing habits on the TikTok e-commerce platform." 
+                            }
+                        },
+                        { 
+                            id: 3, title: "HONOR 2025 MWC Global Social Campaign", shortTitle: "HONOR MWC Campaign", tags: ["MWC Event", "KOL", "Content Marketing"], desc: "Capitalized on MWC by partnering with 66 top global tech & lifestyle KOLs to deeply interpret the brand's core AI features. The project garnered 8.29M+ views, dominating social buzz within the global AI tech community.",
+                            detail: { 
+                                background: "During MWC, HONOR officially launched the Alpha Plan strategy. The brand aimed to leverage overseas social media to rapidly increase exposure and capability awareness within the AI tech circle, dominating industry discussions.", 
+                                strategy: "Built a matrix of top tech and mid-tier lifestyle KOLs in EU & US. Spanned three phases: teasing topics in AI discourse during pre-launch; inviting KOLs for first-person feedback during launch; and conducting in-depth interviews post-launch, while fueling hot topics on X.", 
+                                results: "Over a two-week period, partnered with 66 overseas KOLs to produce 109 in-depth content pieces, with total project views exceeding 8.29 million." 
+                            }
+                        },
+                        { 
+                            id: 4, title: "CapCut AI Mindshare x Global Influencer Marketing", shortTitle: "CapCut Global KOL MKT", tags: ["AI Mindshare", "Influencer Marketing", "Omni-channel Matrix"], desc: "Synchronized with CapCut's AI feature upgrades, partnering with 160+ diverse global creators for high-quality 'Creative + Tutorial' videos. Accumulated 110M+ views, effectively solidifying its market perception as an 'All-in-One AI Creation Platform'.",
+                            detail: { 
+                                background: "With the 2025 launch of CapCut's full suite of AI creation tools, the goal was to comprehensively elevate user core awareness and usage penetration of its 'All-in-One AI Creation Platform'.", 
+                                strategy: "Executed a three-phase influencer marketing plan: Phase 1 focused on AI influencers showcasing tool versatility; Phase 2 used short videos and deep tutorials to boost Video Maker usage; Phase 3 targeted SMBs, collaborating with marketing influencers to seed PC design features.", 
+                                results: "Collaborated with over 160 global influencers, amassing over 110 million cumulative video views and 450,000+ interactions." 
+                            }
+                        },
+                        { 
+                            id: 5, title: "Hisense 100\" TV x EURO 2024 Sports Marketing", shortTitle: "Hisense EURO 2024", tags: ["AR Filter", "CGI Video", "Sports IP Crossover"], desc: "Targeted EURO 2024 with an immersive AR filter bringing the stadium home, complemented by a high-impact CGI viral video at Berlin landmarks. The AR sticker alone generated over 13M views, deeply bonding the event with the brand.",
+                            detail: { 
+                                background: "Leveraging the official partnership of EURO 2024, Hisense aimed to translate the hardcore tech advantages of its 100-inch premium TV into a tangible viewing experience, achieving breakout brand exposure during the tournament.", 
+                                strategy: "Driven by the immersive 'Stadium at Home' concept, developed a TikTok AR filter allowing users to 'teleport' to the stadium. Offline, utilized CGI to place a giant virtual TV at the Brandenburg Gate to spark curiosity, partnering with influencers for watch-party seeding.", 
+                                results: "Social AR sticker views exceeded 13 million; influencer video views surpassed 3.5 million, successfully bonding the tournament's excitement deeply with the brand." 
+                            }
+                        },
+                        { 
+                            id: 6, title: "Motiff AI x Figma Config 2024 Offline Stunt", shortTitle: "Motiff Offline Stunt", tags: ["Product Launch", "Industry Event", "Offline Pop-up"], desc: "Executed an offline scene hijack during a top global design conference. Utilized high-frequency roaming ad trucks and in-depth street interviews to spark industry discussions as a challenger, achieving efficient brand breakout.",
+                            detail: { 
+                                background: "Motiff AI, a UI design-focused tool, aimed to leverage Figma Config 2024—the world's top product design conference—to engage directly with core professionals and establish its reputation as a pioneer AI-native design tool.", 
+                                strategy: "Ingeniously executed an industry event 'scene hijack'. Custom billboard trucks roamed core routes with 'Hi Figma, are you ready for AI era?'. Meanwhile, invited street-side designers for hands-on experiences and interviews, packaging the event into a viral brand film.", 
+                                results: "Achieved high-density exposure among core conference professionals, successfully driving industry-wide breakout discussions." 
+                            }
+                        },
+                        { 
+                            id: 7, title: "Alipay+ APAC Cross-Border Destination Promo", shortTitle: "Alipay+ APAC Promo", tags: ["Content Seeding", "High-frequency Exposure", "Tourism Board Collab"], desc: "Collaborated with local tourism boards and top influencers for travel seeding, combined with intensive exposure on 104 screens at core APAC transit hubs. Visualized abstract payment functions to capture wallet mindshare.",
+                            detail: { 
+                                background: "With the 2023 outbound tourism recovery, Alipay+ sought to target local wallet users in the APAC region, resolving cognitive ambiguity and reinforcing the mindset that 'you can directly use local wallets for Alipay+ payments while traveling'.", 
+                                strategy: "Masterminded the 'Top 100 Viral Destinations Travel Plan'. Collaborated with local tourism boards and influencers for full-scenario payment check-ins. Deployed over 104 billboard ads across core transit hubs in Thailand and South Korea, forging a cognitive loop.", 
+                                results: "Influencer content in the Singapore market alone garnered 1.9 million+ impressions. By integrating high-frequency scenarios, abstract payment tech was successfully transformed into a real travel experience." 
+                            }
+                        },
+                        { 
+                            id: 8, title: "Redmi Note 11 Series × TikTok Global Hashtag Challenge", shortTitle: "Redmi TikTok Challenge", tags: ["Platform Challenge", "Influencer Marketing", "Global Viral"], desc: "Targeted global Gen Z with a native 'Dance Machine' interactive sticker, triggering a viral spread via a cross-border influencer matrix. Won the TopDigital Bronze Award and generated a phenomenal 36B+ views across 17 global markets.",
+                            detail: { 
+                                background: "For the Redmi Note 11 launch, the brand aimed to precisely target the Gen Z audience, leveraging TikTok's highly interactive nature to achieve exponential amplification of global new product buzz and exposure.", 
+                                strategy: "Catering to Gen Z's music and dance preferences, tailored a native 'Dance Machine' interactive sticker embedding the product's 'lightning' symbol. First validated in the UK market, then rapidly replicated and went viral across other core global markets.", 
+                                results: "Won the TopDigital Bronze Award; the UK debut alone set a record of 1.11B+ views. The sticker was reused in 17 countries, amassing over 36 billion global views and 3.6 billion interactions." 
+                            }
+                        },
+                        { 
+                            id: 9, title: "vivo x 2022 Qatar World Cup PR Campaign", shortTitle: "vivo World Cup PR", tags: ["Global Sports IP", "CSR Crossover", "Local PR"], desc: "Fused top football IP with youth education CSR based on SEA social context. Partnered with NGOs and football stars for a dream advocacy campaign, establishing deep emotional resonance among regional pan-entertainment audiences.",
+                            detail: { 
+                                background: "Given SEA's relatively limited attention to traditional football tournaments, vivo, as a sponsor, sought a localized communication bridge to boost the World Cup IP's local appeal and deepen emotional brand connections.", 
+                                strategy: "Fused the top sports event with refugee children's education, launching the 'Give Your Dreams A Shot' CSR campaign. Partnered with NGOs and football stars to form a 'Dream Guard'. Held offline charity watch parties and experience events in Vietnam and Singapore.", 
+                                results: "Coordinated over 50 articles with local SEA media; social media reached over 1.77M fans, successfully achieving a localized translation of an international IP." 
+                            }
+                        },
+                        { 
+                            id: 10, title: "\"Happy Chinese New Year\" Cultural IP Global Campaign", shortTitle: "CNY Global Campaign", tags: ["Cultural IP", "Social Viral", "E-commerce Integration"], desc: "Transformed a national cultural IP into an engaging global consumer experience via social challenges, cross-cultural influencer contents, and livestreaming. Partnered with 120+ stars/creators, driving 300M+ brand exposures.",
+                            detail: { 
+                                background: "Amid the wave of Chinese culture going global, the national IP 'Happy Chinese New Year' sought to reach overseas audiences via innovative digital communication, reinforcing the awareness of traditional cultural symbols in a global context.", 
+                                strategy: "Built a 'Content + Social + E-commerce' matrix. Launched an exclusive 'New Year's Eve Dinner' sticker on TikTok to trigger UGC; invited overseas influencers to film concert reaction videos; capitalized on the 'New Year Goods Festival' for cultural livestreams.", 
+                                results: "Engaged over 120 domestic and overseas stars and influencers, exceeding 300 million global brand impressions, with the campaign's dedicated hashtag amassing over 142 million cross-platform exposures." 
+                            }
+                        }
+                    ]
+                },
+                modal: { title: "Let's Connect!", subtitle: "Opening new global horizons", wechat: "WeChat ID", email: "Email", qr: "Scan to Connect", copy: "Copy ID", copied: "Copied" }
+            }
+        };
+
+        let currentLang = 'zh';
+        let currentCaseIndex = 0;
+
+        // 独立的案例配图数组，按顺序对应 10 个项目 (列表封面图)
+        const caseImages = [
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/xiaomi%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/tts%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/honor%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/cc%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/hisense%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/motiff.PNG",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/alipay.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/thccover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/vivo%20cover.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/spf%20cover.png"
+        ];
+
+        // 独立的案例详情弹窗配图数组，按顺序对应 10 个项目 (弹窗内部长图)
+        const caseDetailImages = [
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/xiaomi%20page.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/ttsp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/honorp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/ccp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/hisensep.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/motiffp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/alipay%20page.png",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/redmp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/vivopp.jpg",
+            "https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/spring%20festival%20page.png"
+        ];
+
+        function updateContent() {
+            const content = siteContent[currentLang];
+            document.getElementById('hero-name').textContent = content.hero.name;
+            document.getElementById('hero-slogan').textContent = content.hero.slogan;
+            document.getElementById('hero-intro').textContent = content.hero.intro;
+            
+            // 重新定位毛玻璃悬浮标签，将第三个标签移至左下角
+            const badgeContainer = document.getElementById('hero-badges');
+            badgeContainer.innerHTML = content.hero.badges.map((text, i) => `
+                <div class="absolute ${i === 0 ? 'top-[30%] -left-8 md:-left-16' : i === 1 ? 'bottom-[20%] -right-6 md:-right-10' : 'bottom-[5%] -left-4 md:-left-10'} animate-float z-20" style="animation-delay: ${i * 0.5}s;">
+                    <div class="glass-liquid px-6 py-3 md:px-7 md:py-3.5 rounded-full border border-white/80 shadow-xl shadow-blue-500/10">
+                        <span class="text-[10px] md:text-[11px] font-bold text-gray-800 tracking-wide whitespace-nowrap opacity-90">${text}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('gallery-label').textContent = content.gallery.label;
+            document.getElementById('gallery-title').textContent = content.gallery.title;
+            document.getElementById('gal-text-1').textContent = content.gallery.text1;
+            document.getElementById('gal-text-2').textContent = content.gallery.text2;
+            document.getElementById('gal-text-3').textContent = content.gallery.text3;
+
+            const marqueeContent = document.getElementById('marquee-content');
+            marqueeContent.innerHTML = [...content.hero.marquee, ...content.hero.marquee].map(text => `<span class="inline-block mx-8 text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">${text}</span>`).join('');
+
+            document.getElementById('nav-expertise').textContent = content.nav.expertise;
+            document.getElementById('nav-gallery').textContent = content.nav.gallery;
+            document.getElementById('nav-portfolio').textContent = content.nav.portfolio;
+            document.getElementById('lang-toggle').textContent = content.nav.lang;
+            document.getElementById('btn-xhs-text').textContent = content.hero.btnXhs;
+            document.getElementById('btn-contact-text').textContent = content.hero.btnContact;
+
+            document.getElementById('expertise-label').textContent = content.expertise.label;
+            document.getElementById('expertise-title').textContent = content.expertise.title;
+            const grid = document.getElementById('expertise-grid');
+            grid.innerHTML = content.expertise.items.map(item => `
+                <div class="glass-card-refined flex-1 min-w-[280px] p-10 rounded-[2.5rem] cursor-default group flex flex-col items-center">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 border border-white shadow-sm transition-transform group-hover:scale-110"><span class="text-blue-600">${getIcon(item.icon)}</span></div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-gray-900 text-center">${item.title}</h3>
+                    <div class="text-gray-500 text-[13px] leading-relaxed text-justify w-full tracking-wide">${item.desc}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('portfolio-label').textContent = content.portfolio.label;
+            document.getElementById('portfolio-title').textContent = content.portfolio.title;
+            renderCaseSidebar();
+            renderCaseContent(0);
+
+            document.getElementById('modal-title').textContent = content.modal.title;
+            document.getElementById('modal-subtitle').textContent = content.modal.subtitle;
+            document.getElementById('label-wechat').textContent = content.modal.wechat;
+            document.getElementById('label-email').textContent = content.modal.email;
+            document.getElementById('label-qr').textContent = content.modal.qr;
+            document.getElementById('copy-btn-text').textContent = content.modal.copy;
+        }
+
+        function renderCaseSidebar() {
+            const sidebar = document.getElementById('case-sidebar');
+            sidebar.innerHTML = siteContent[currentLang].portfolio.items.map((item, index) => `
+                <button onclick="selectCase(${index})" class="case-link w-full ${index === currentCaseIndex ? 'active' : ''}">
+                    ${item.shortTitle}
+                </button>
+            `).join('');
+        }
+
+        function selectCase(index) { currentCaseIndex = index; renderCaseSidebar(); renderCaseContent(index); }
+
+        function renderCaseContent(index) {
+            const item = siteContent[currentLang].portfolio.items[index];
+            document.getElementById('case-display-area').innerHTML = `
+                <div class="animate-fade-in w-full flex flex-col items-start text-left">
+                    <div class="w-full aspect-[16/8] rounded-xl overflow-hidden shadow-2xl border border-white mb-4">
+                        <img src="${caseImages[index]}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full max-w-3xl">
+                        <div class="flex flex-wrap gap-2 justify-start mb-5">
+                            ${item.tags.map(tag => `<span class="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-black uppercase tracking-widest rounded-full">${tag}</span>`).join('')}
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-gray-900 mb-2 leading-tight">${item.title}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-2xl">${item.desc}</p>
+                        <button onclick="openCaseModal(${index})" class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-blue-600 border-b-2 border-blue-600 pb-1 hover:text-blue-800 hover:border-blue-800 transition-all group">
+                            ${siteContent[currentLang].portfolio.more}
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openModal() { document.getElementById('contact-modal').classList.add('active'); }
+        function closeModal() { document.getElementById('contact-modal').classList.remove('active'); }
+        
+        function openCaseModal(idx) {
+            const content = siteContent[currentLang].portfolio;
+            const item = content.items[idx];
+            const sections = content.modalSections;
+            
+            document.getElementById('case-detail-inner').innerHTML = `
+                <div class="flex flex-col lg:flex-row h-full overflow-hidden">
+                    <div class="w-full lg:w-[55%] p-10 lg:p-14 overflow-y-auto custom-scrollbar flex flex-col justify-start h-full">
+                        <div class="mb-10">
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${item.tags.map(tag => `<span class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">${tag}</span>`).join('')}
+                            </div>
+                            <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 leading-[1.2] tracking-tight">${item.title}</h2>
+                        </div>
+                        
+                        <div class="space-y-8 pb-8">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-gray-900 mb-2 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-gray-300 rounded-full"></span>${sections.background}
+                                </h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">${item.detail.background}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-extrabold text-gray-900 mb-2 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>${sections.strategy}
+                                </h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">${item.detail.strategy}</p>
+                            </div>
+                            <div class="pt-5 mt-2 border-t border-gray-100/60">
+                                <div class="relative bg-gradient-to-br from-blue-50/60 to-white/30 backdrop-blur-xl p-6 md:p-7 rounded-[1.5rem] border border-white/80 shadow-[0_8px_32px_rgba(59,130,246,0.08)] overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl group-hover:bg-blue-400/20 transition-colors duration-500"></div>
+                                    <h4 class="text-sm font-extrabold text-gray-900 mb-3 flex items-center gap-2 relative z-10">
+                                        <div class="w-6 h-6 rounded-full bg-blue-100/80 flex items-center justify-center border border-white">
+                                            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                        </div>
+                                        ${sections.results}
+                                    </h4>
+                                    <p class="text-gray-500 text-sm leading-relaxed relative z-10">${item.detail.results}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full lg:w-[45%] relative bg-gray-100">
+                        <img src="${caseDetailImages[idx]}" class="absolute inset-0 w-full h-full object-cover">
+                    </div>
+                </div>
+            `;
+            document.getElementById('case-detail-modal').classList.add('active');
+        }
+
+        function closeCaseModal() { document.getElementById('case-detail-modal').classList.remove('active'); }
+        
+        function copyWechat() {
+            const id = "Kether_Tian"; const el = document.createElement('textarea'); el.value = id; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+            const btnText = document.getElementById('copy-btn-text'); const original = siteContent[currentLang].modal.copy; btnText.textContent = siteContent[currentLang].modal.copied;
+            setTimeout(() => { btnText.textContent = original; }, 2000);
+        }
+        function getIcon(name) {
+            const icons = {
+                globe: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>`,
+                users: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`,
+                'trending-up': `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>`
+            };
+            return icons[name] || '';
+        }
+        function toggleLanguage() { currentLang = currentLang === 'zh' ? 'en' : 'zh'; updateContent(); }
+        window.onload = updateContent;
+    </script>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-white/20">
+        <div class="layout-container h-20 flex items-center justify-between">
+            <div class="text-2xl font-black tracking-tighter italic text-blue-600">K.</div>
+            
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="hidden md:flex items-center p-1.5 bg-white/30 backdrop-blur-xl rounded-full border border-white/60 shadow-sm hover:bg-white/40 transition-colors duration-300">
+                    <a href="#expertise" id="nav-expertise" class="px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 hover:bg-white/90 hover:shadow-sm transition-all duration-300"></a>
+                    <a href="#gallery" id="nav-gallery" class="px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 hover:bg-white/90 hover:shadow-sm transition-all duration-300"></a>
+                    <a href="#portfolio" id="nav-portfolio" class="px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 hover:bg-white/90 hover:shadow-sm transition-all duration-300"></a>
+                </div>
+                <button onclick="toggleLanguage()" id="lang-toggle" class="w-11 h-11 flex items-center justify-center rounded-full border border-white/80 bg-white/60 text-[10px] font-black text-gray-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm duration-300">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-52 pb-24 layout-container flex flex-col md:flex-row items-center justify-between gap-16 md:gap-8">
+        
+        <!-- 左侧文案区：取消强行匹配标题宽度，恢复自然排版 -->
+        <div class="w-full md:w-auto flex justify-center md:justify-start z-10 md:pr-4">
+            <div class="w-full flex flex-col items-center md:items-start text-center md:text-left">
+                
+                <!-- 大标题与副标题 (保持单行且不限制宽度) -->
+                <h1 id="hero-name" class="text-[3rem] md:text-6xl lg:text-[72px] font-extrabold tracking-tighter mb-4 leading-none md:whitespace-nowrap"></h1>
+                <h2 id="hero-slogan" class="text-[1.75rem] md:text-4xl lg:text-[42px] font-bold tracking-tight text-blue-600 mb-8 leading-tight md:whitespace-nowrap"></h2>
+                
+                <!-- 新增包裹层：将段落与按钮限制在一个完美宽度 (约420px)，实现它们之间的两端对齐，并让文字在“本土”后换行 -->
+                <div class="w-full max-w-sm md:max-w-[420px] flex flex-col items-center md:items-start">
+                    
+                    <!-- 简介文案：在包裹层宽度下进行 text-justify 两端对齐 -->
+                    <p id="hero-intro" class="text-gray-500 font-medium leading-relaxed mb-10 text-[15px] opacity-90 text-justify w-full"></p>
+                    
+                    <!-- 按钮组：与文案段落同宽，并平分空间 -->
+                    <div class="flex flex-row items-stretch justify-between gap-3 md:gap-4 w-full">
+                        
+                        <button onclick="window.open('https://www.xiaohongshu.com/user/profile/55702274484fb678287f2c90')" class="glass-btn flex-1 py-4 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-sm hover:-translate-y-1 transition-all group">
+                            <svg class="w-5 h-5 text-red-500 group-hover:text-red-600 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c1.68 0 3.282.515 4.75 1.407A.75.75 0 0024 19.455V5.207a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+                            </svg>
+                            <span id="btn-xhs-text"></span>
+                        </button>
+                        
+                        <!-- 联系方式按钮 -->
+                        <button onclick="openModal()" class="bg-blue-600 text-white flex-1 py-4 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-blue-600/20 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-blue-600/30 transition-all border border-blue-500 group">
+                            <div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <span id="btn-contact-text"></span>
+                        </button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="w-full md:w-1/2 flex justify-center md:justify-end relative mt-16 md:mt-0">
+            <!-- 终极对齐方案：上大圆角、下小圆角的拱门形底座 -->
+            <div class="relative w-[280px] h-[280px] md:w-[380px] md:h-[380px] flex-shrink-0">
+                
+                <!-- 1. 背景底板 (颜色调浅，保持渐变，从亮蓝过渡到柔和靛蓝) -->
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-t-[2.5rem] md:rounded-t-[3rem] rounded-b-2xl shadow-[0_20px_50px_rgba(37,99,235,0.25)] border border-white/30 border-b-0 z-0"></div>
+                
+                <!-- 2. 照片遮罩层 (采用 flex items-end 严密贴底对齐，圆角与底板保持绝对同步) -->
+                <div class="absolute -top-[50%] inset-x-0 bottom-0 overflow-hidden rounded-b-2xl z-10 pointer-events-none flex items-end justify-center">
+                    <!-- 3. 照片本身 (继续下移5个像素，现在为27px/29px，确保更多身体部分被裁切，重心更稳) -->
+                    <img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/IMG_1856%20(1).png" 
+                         class="w-[115%] md:w-[125%] h-auto max-w-none drop-shadow-2xl hover:scale-105 transition-transform duration-700 origin-bottom pointer-events-auto translate-y-[27px] md:translate-y-[29px]">
+                </div>
+                
+                <!-- 4. 悬浮标签容器 -->
+                <div id="hero-badges" class="absolute inset-0 z-20"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full py-8 overflow-hidden opacity-50 select-none"><div class="flex whitespace-nowrap animate-marquee" id="marquee-content"></div></div>
+
+    <section id="expertise" class="py-20 relative"><div class="layout-container"><div class="text-center mb-14"><span id="expertise-label" class="text-[10px] font-black text-blue-500 uppercase tracking-[0.5em] mb-4 inline-block"></span><h2 id="expertise-title" class="text-4xl lg:text-5xl font-bold tracking-tighter text-gray-900"></h2></div><div id="expertise-grid" class="flex flex-wrap md:flex-nowrap gap-6 justify-center items-stretch"></div></div></section>
+
+    <section id="gallery" class="py-20 overflow-hidden relative">
+        <div class="layout-container relative">
+            <div class="absolute -top-6 -left-20 right-0 overflow-visible opacity-[0.03] select-none pointer-events-none z-0">
+                <div class="flex whitespace-nowrap animate-marquee text-[4rem] md:text-[6rem] font-black tracking-tighter uppercase leading-none">
+                    <span class="mx-8">PROJECT GALLERY</span><span class="mx-8">PROJECT GALLERY</span><span class="mx-8">PROJECT GALLERY</span><span class="mx-8">PROJECT GALLERY</span><span class="mx-8">PROJECT GALLERY</span><span class="mx-8">PROJECT GALLERY</span>
+                </div>
+            </div>
+
+            <div class="mb-10 border-b border-gray-200/60 pb-6 relative z-10">
+                <span id="gallery-label" class="text-[10px] font-black text-blue-500 uppercase tracking-[0.5em] mb-4 inline-block"></span>
+                <h2 id="gallery-title" class="text-4xl lg:text-5xl font-extrabold tracking-tighter text-gray-900"></h2>
+            </div>
+
+            <div class="gallery-grid relative z-10">
+                <div class="gallery-text col-span-2 row-span-1" id="gal-text-1"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/motiff.PNG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/tecno.JPEG"></div>
+                <div class="gallery-item col-span-1 row-span-2"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/xiaomi.JPEG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/alipay.png"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/vivo%E6%B3%BC%E6%B0%B4%E8%8A%82.PNG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/tts.JPEG"></div>
+                <div class="gallery-text col-span-2 row-span-1" id="gal-text-2"></div>
+                <div class="gallery-item col-span-1 row-span-2"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/xiaomi%20photograph.PNG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/honor.JPEG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/ces.png"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/longi1.PNG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/tcl.PNG"></div>
+                <div class="gallery-item col-span-1 row-span-1"><img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/vivo.PNG"></div>
+                <div class="gallery-text col-span-2 row-span-1" id="gal-text-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-20 relative"><div class="layout-container">
+        <div class="text-center mb-12">
+            <span id="portfolio-label" class="text-[10px] font-black text-blue-500 uppercase tracking-[0.5em] mb-4 inline-block"></span>
+            <h2 id="portfolio-title" class="text-4xl lg:text-5xl font-bold tracking-tighter text-gray-900"></h2>
+        </div>
+        
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+            <div class="case-sidebar-container sticky top-24 shrink-0">
+                <div id="case-sidebar" class="flex flex-col overflow-y-auto no-scrollbar"></div>
+            </div>
+            <div class="flex-1 min-h-[600px] flex items-start justify-start" id="case-display-area"></div>
+        </div>
+    </div></section>
+
+    <div id="contact-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content glass-liquid w-full max-w-sm rounded-2xl p-10 text-center relative overflow-hidden" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <div class="mb-10 text-center">
+                <h3 id="modal-title" class="text-2xl font-black text-blue-600 tracking-tighter mb-2"></h3>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest" id="modal-subtitle"></p>
+            </div>
+            
+            <div class="space-y-5 mb-8 text-left px-2">
+                <div>
+                    <label id="label-wechat" class="block text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1"></label>
+                    <div class="text-base font-bold text-gray-800 tracking-tight">Kether_Tian</div>
+                </div>
+                <div>
+                    <label id="label-email" class="block text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1"></label>
+                    <div class="text-base font-bold text-gray-800 tracking-tight">kethertian@gmail.com</div>
+                </div>
+            </div>
+            
+            <div class="bg-white/80 rounded-xl p-4 mb-8 border border-white shadow-inner flex flex-col items-center">
+                <img src="https://raw.githubusercontent.com/kethertian/webpic/refs/heads/main/code.jpg" class="w-full aspect-square object-cover rounded-lg mb-3 shadow-sm" alt="WeChat QR Code">
+                <span id="label-qr" class="text-[10px] font-black text-gray-500 uppercase tracking-widest"></span>
+            </div>
+            
+            <button onclick="copyWechat()" class="w-full py-4 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-colors shadow-xl shadow-black/10"><span id="copy-btn-text"></span></button>
+        </div>
+    </div>
+
+    <!-- 案例详情大型弹窗 (精美排版升级版 左文右图) -->
+    <div id="case-detail-modal" class="modal-overlay" onclick="closeCaseModal()">
+        <div class="modal-content glass-liquid w-full max-w-5xl h-[85vh] rounded-[2.5rem] overflow-hidden relative flex flex-col shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeCaseModal()" class="absolute top-6 right-6 z-20 w-9 h-9 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-gray-900 backdrop-blur-md transition-all border border-white shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div id="case-detail-inner" class="flex-1 h-full overflow-hidden">
+                <!-- 由 JS 渲染左右分离布局 -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
